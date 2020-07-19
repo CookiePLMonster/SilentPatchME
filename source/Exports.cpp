@@ -1,4 +1,8 @@
 #include <d3dx9.h>
+#include <mutex>
+#include <Shlwapi.h>
+
+#pragma comment(lib, "Shlwapi.lib")
 
 // These exports implement a bare minimum required for Mass Effect
 // In the case where this wrapper is needed for a different game,
@@ -33,9 +37,35 @@ auto pD3DXCreateMesh = D3DXCreateMesh_init;
 
 
 // Init function
+std::once_flag initFlag;
 static void D3DX_InitExports()
 {
+    std::call_once(initFlag, [] {
+        wchar_t dllPath[MAX_PATH];
+        GetSystemDirectoryW(dllPath, MAX_PATH);
+        PathAppendW(dllPath, L"d3dx9_31.dll");
 
+        HMODULE d3dx9 = LoadLibraryW(dllPath);
+        if (d3dx9 == nullptr)
+        {
+            // Everything will be broken, don't bother recovering
+            std::terminate();
+        }
+
+        pD3DXUVAtlasCreate = reinterpret_cast<decltype(pD3DXUVAtlasCreate)>(GetProcAddress(d3dx9, "D3DXUVAtlasCreate"));
+        pD3DXWeldVertices = reinterpret_cast<decltype(pD3DXWeldVertices)>(GetProcAddress(d3dx9, "D3DXWeldVertices"));
+        pD3DXSimplifyMesh = reinterpret_cast<decltype(pD3DXSimplifyMesh)>(GetProcAddress(d3dx9, "D3DXSimplifyMesh"));
+        pD3DXDebugMute = reinterpret_cast<decltype(pD3DXDebugMute)>(GetProcAddress(d3dx9, "D3DXDebugMute"));
+        pD3DXCleanMesh = reinterpret_cast<decltype(pD3DXCleanMesh)>(GetProcAddress(d3dx9, "D3DXCleanMesh"));
+        pD3DXDisassembleShader = reinterpret_cast<decltype(pD3DXDisassembleShader)>(GetProcAddress(d3dx9, "D3DXDisassembleShader"));
+        pD3DXCompileShader = reinterpret_cast<decltype(pD3DXCompileShader)>(GetProcAddress(d3dx9, "D3DXCompileShader"));
+        pD3DXAssembleShader = reinterpret_cast<decltype(pD3DXAssembleShader)>(GetProcAddress(d3dx9, "D3DXAssembleShader"));
+        pD3DXLoadSurfaceFromMemory = reinterpret_cast<decltype(pD3DXLoadSurfaceFromMemory)>(GetProcAddress(d3dx9, "D3DXLoadSurfaceFromMemory"));
+        pD3DXPreprocessShader = reinterpret_cast<decltype(pD3DXPreprocessShader)>(GetProcAddress(d3dx9, "D3DXPreprocessShader"));
+        pD3DXCreateMesh = reinterpret_cast<decltype(pD3DXCreateMesh)>(GetProcAddress(d3dx9, "D3DXCreateMesh"));
+
+        // Leak the DLL handle deliberately
+    });
 }
 
 
