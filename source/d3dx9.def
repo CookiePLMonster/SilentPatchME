@@ -1,1 +1,15 @@
 LIBRARY D3DX9_31
+EXPORTS
+    D3DXUVAtlasCreate=D3DXUVAtlasCreate_Export
+    D3DXWeldVertices=D3DXUVAtlasCreate_Export
+    D3DXSimplifyMesh=D3DXSimplifyMesh_Export
+    D3DXDebugMute=D3DXDebugMute_Export
+    D3DXCleanMesh=D3DXCleanMesh_Export
+    D3DXDisassembleShader=D3DXDisassembleShader_Export
+    D3DXCompileShader=D3DXCompileShader_Export
+    D3DXAssembleShader=D3DXAssembleShader_Export
+    D3DXLoadSurfaceFromMemory=D3DXLoadSurfaceFromMemory_Export
+    D3DXPreprocessShader=D3DXPreprocessShader_Export
+    D3DXCreateMesh=D3DXCreateMesh_Export
+
+    D3DXMatrixInverse=D3DXMatrixInverse_XM
