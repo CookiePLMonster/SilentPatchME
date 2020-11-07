@@ -9,11 +9,18 @@ D3DXMATRIX* WINAPI D3DXMatrixInverse_XM(D3DXMATRIX *pOut, FLOAT *pDeterminant, C
 {
 	XMVECTOR determinant;
 	const XMMATRIX out = XMMatrixInverse(&determinant, XMMATRIX(static_cast<const float*>(*pM)));
+	const float det = XMVectorGetX(determinant);
 
-	*pOut = *reinterpret_cast<const D3DXMATRIX*>(&out);
+	// Mirror the behaviour of D3DXMatrixInverse
+	if (det == 0.0f)
+	{
+		return nullptr;
+	}
+
 	if (pDeterminant != nullptr)
 	{
-		*pDeterminant = XMVectorGetX(determinant);
+		*pDeterminant = det;
 	}
+	*pOut = *reinterpret_cast<const D3DXMATRIX*>(&out);
 	return pOut;
 }
