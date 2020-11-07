@@ -8,10 +8,13 @@ SilentPatch diagnoses those issues and provides a definite fix, bringing complet
 
 ## Featured fixes
 
-* Fixed an issue causing black blobs to appear with contemporary AMD CPUs.
+* Fixed an issue causing black blobs to appear with contemporary AMD CPUs. **Warning: AMD FX and Bulldozer chips are still affected. We are investigating the issue.**
 
 ## Credits
 
 * [Rafael Rivera](https://withinrafael.com/) - co-developer
 
 ![preview](https://i.imgur.com/jc8j6Ax.jpg)
+
+## Related reads
+* [Fixing Mass Effect black blobs on modern AMD CPUs](https://cookieplmonster.github.io/2020/07/19/silentpatch-mass-effect/) - my comprehensive writeup about this issue and the steps taken to fix it
